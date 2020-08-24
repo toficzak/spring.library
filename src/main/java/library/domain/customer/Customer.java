@@ -3,12 +3,48 @@ package library.domain.customer;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import library.api.form.CustomerForm;
 
 @Entity
 public class Customer {
+
   @Id
   @GeneratedValue
   private Long id;
+
+  @NotBlank
   private String firstName;
+
+  @NotBlank
   private String lastName;
+
+  @Email
+  @NotBlank
+  private String email;
+
+  @NotBlank
+  private String password;
+
+  public Customer(
+      @NotBlank String firstName,
+      @NotBlank String lastName,
+      @Email @NotBlank String email,
+      @NotBlank String password) {
+    super();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = BCrypt.hashpw(password, BCrypt.gensalt(15));
+  }
+
+  public CustomerForm viewModel() {
+    return new CustomerForm(this.getName());
+  }
+
+  private String getName() {
+    return this.firstName + " " + this.lastName;
+  }
 }
