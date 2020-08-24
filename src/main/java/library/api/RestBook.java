@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import library.api.form.BookForm;
+import library.api.dto.BookDto;
 import library.api.form.CreateBookForm;
 import library.domain.book.CreatorBook;
 import library.domain.book.ListerBook;
@@ -26,17 +26,17 @@ public class RestBook {
   }
 
   @GetMapping("{id}")
-  public BookForm get(@PathVariable("id") Long id) {
+  public BookDto get(@PathVariable("id") Long id) {
     return bookLister.get(id);
   }
 
   @GetMapping
-  public List<BookForm> list() {
+  public List<BookDto> list() {
     return bookLister.list();
   }
 
   @PostMapping
-  public BookForm create(@RequestBody CreateBookForm form) {
+  public BookDto create(@RequestBody CreateBookForm form) {
     return bookCreator.create(form);
   }
 

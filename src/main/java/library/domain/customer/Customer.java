@@ -1,12 +1,15 @@
 package library.domain.customer;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import library.api.form.CustomerForm;
+import library.api.dto.CustomerDto;
+import library.domain.rental.Rental;
 
 @Entity
 public class Customer {
@@ -28,6 +31,11 @@ public class Customer {
   @NotBlank
   private String password;
 
+  @OneToMany(mappedBy = "customer")
+  private List<Rental> rentals;
+
+  public Customer() {}
+
   public Customer(
       @NotBlank String firstName,
       @NotBlank String lastName,
@@ -40,8 +48,8 @@ public class Customer {
     this.password = BCrypt.hashpw(password, BCrypt.gensalt(15));
   }
 
-  public CustomerForm viewModel() {
-    return new CustomerForm(this.getName());
+  public CustomerDto viewModel() {
+    return new CustomerDto(this.getName());
   }
 
   private String getName() {
