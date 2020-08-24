@@ -16,6 +16,12 @@ public class ListerBook {
     this.bookRepository = bookRepository;
   }
 
+  public BookForm get(Long id) {
+    return bookRepository.findById(id)
+        .map(Book::viewModel)
+        .orElseThrow();
+  }
+
   public List<BookForm> list() {
     List<Book> list = new ArrayList<>();
     bookRepository.findAll().forEach(list::add);
