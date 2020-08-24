@@ -1,6 +1,6 @@
 package library.domain.rental;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
@@ -26,11 +26,11 @@ public class Rental {
 
   @NotNull
   @DateTimeFormat(iso = ISO.DATE)
-  private ZonedDateTime dateFrom;
+  private LocalDateTime dateFrom;
 
   @NotNull
   @DateTimeFormat(iso = ISO.DATE)
-  private ZonedDateTime dateTo;
+  private LocalDateTime dateTo;
 
   @NotNull
   private Status status;
@@ -51,7 +51,7 @@ public class Rental {
 
   public Rental() {}
 
-  public Rental(ZonedDateTime dateFrom, ZonedDateTime dateTo, Customer customer, List<Book> books) {
+  public Rental(LocalDateTime dateFrom, LocalDateTime dateTo, Customer customer, List<Book> books) {
     super();
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;

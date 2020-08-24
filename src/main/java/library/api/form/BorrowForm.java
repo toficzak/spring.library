@@ -1,6 +1,6 @@
 package library.api.form;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,10 +11,10 @@ public class BorrowForm {
 
   @NotNull
   @DateTimeFormat(iso = ISO.DATE)
-  public ZonedDateTime dateFrom;
+  public LocalDateTime dateFrom;
   @NotNull
   @DateTimeFormat(iso = ISO.DATE)
-  public ZonedDateTime dateTo;
+  public LocalDateTime dateTo;
 
   @NotEmpty
   public Collection<Long> bookIds;

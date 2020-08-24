@@ -29,4 +29,8 @@ public class Book {
   public BookDto viewModel() {
     return new BookDto(this.title);
   }
+
+  public Long getId() {
+    return this.id;
+  }
 }
