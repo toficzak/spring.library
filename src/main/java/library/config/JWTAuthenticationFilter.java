@@ -3,6 +3,7 @@ package library.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import library.domain.customer.Customer;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private AuthenticationManager authenticationManager;
 
+  private static Logger LOG = Logger.getLogger(AuthenticationManager.class.getSimpleName());
+
   public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
@@ -38,6 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
               creds.getPassword(),
               new ArrayList<>()));
     } catch (IOException e) {
+      LOG.info("Error while authenticated user. Exception: " + e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -53,5 +57,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
         .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
     res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    LOG.info("Authenticated user: " + auth.getName());
   }
 }
