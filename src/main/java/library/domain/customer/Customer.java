@@ -59,4 +59,14 @@ public class Customer {
   public Long getId() {
     return this.id;
   }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+
 }
