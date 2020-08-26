@@ -10,15 +10,14 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class BorrowForm {
 
   @NotNull
-  @DateTimeFormat(iso = ISO.DATE)
+  @DateTimeFormat(iso = ISO.DATE_TIME)
   public LocalDateTime dateFrom;
   @NotNull
-  @DateTimeFormat(iso = ISO.DATE)
+  @DateTimeFormat(iso = ISO.DATE_TIME)
   public LocalDateTime dateTo;
 
   @NotEmpty
   public Collection<Long> bookIds;
-  @NotNull
-  public Long customerId;
 
+  public Long customerId;
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -33,6 +35,7 @@ public class Rental {
   private LocalDateTime dateTo;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private Status status;
 
   @NotNull
@@ -40,7 +43,7 @@ public class Rental {
   private Customer customer;
 
   @NotNull
-  @OneToMany(mappedBy = "rental")
+  @OneToMany()
   private List<Book> books;
 
   private enum Status {
