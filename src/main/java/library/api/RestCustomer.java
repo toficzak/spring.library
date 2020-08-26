@@ -1,5 +1,6 @@
 package library.api;
 
+import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class RestCustomer {
   }
 
   @PostMapping("register")
-  public CustomerDto register(@RequestBody RegistrationForm form) {
+  public CustomerDto register(@Valid @RequestBody RegistrationForm form) {
     return registrator.register(form);
   }
 

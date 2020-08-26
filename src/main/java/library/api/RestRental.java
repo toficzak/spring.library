@@ -1,5 +1,6 @@
 package library.api;
 
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class RestRental {
   }
 
   @PostMapping
-  public RentalDto rent(@RequestBody BorrowForm form) {
+  public RentalDto rent(@Valid @RequestBody BorrowForm form) {
     return rentalFacade.borrow(form);
   }
 
