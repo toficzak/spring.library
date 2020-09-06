@@ -1,7 +1,9 @@
 package library.api;
 
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,10 +31,15 @@ public class RestCustomer {
     this.authenticationFacade = authenticationFacade;
   }
 
+  @GetMapping
+  public List<CustomerDto> listing() {
+    return customerLister.getAll();
+  }
+
   @GetMapping("me")
   public CustomerDto me() {
     Authentication auth = authenticationFacade.getAuthentication();
-    return customerLister.get((String) auth.getPrincipal());
+    return customerLister.get(((User) auth.getPrincipal()).getUsername());
   }
 
   @PostMapping("register")
