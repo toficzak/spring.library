@@ -15,9 +15,10 @@ import library.domain.customer.role.RoleName;
 @Component
 public class DbFiller implements ApplicationRunner {
 
+  private static final String PASSWORD = "password";
+
   private RepositoryRole roleRepo;
   private RepositoryCustomer customerRepo;
-
 
   public DbFiller(RepositoryRole roleRepo, RepositoryCustomer customerRepo) {
     super();
@@ -32,6 +33,7 @@ public class DbFiller implements ApplicationRunner {
     this.initCustomers();
   }
 
+
   @Transactional
   private void initRoles() {
     Role adminRole = new Role(RoleName.ADMIN.name(), "Admin of system.");
@@ -45,18 +47,18 @@ public class DbFiller implements ApplicationRunner {
   private void initCustomers() {
     Set<Role> adminRoles = roleRepo.findAllByNameIn(Role.ADMIN_ROLES);
     Customer admin = new Customer("Krzysio", "K", "admin@library.pl",
-        "password", adminRoles);
+        PASSWORD, adminRoles);
 
     Set<Role> customerRoles = roleRepo.findAllByNameIn(Role.CUSTOMER_ROLES);
     Customer customer = new Customer("Rudy", "K", "customer@library.pl",
-        "password", customerRoles);
+        PASSWORD, customerRoles);
 
     Set<Customer> customers = Set.of(admin, customer);
     customerRepo.saveAll(customers);
   }
 
   public static void main(String... strings) {
-    System.out.println(BCrypt.hashpw("password", BCrypt.gensalt(15)));
+    System.out.println(BCrypt.hashpw(PASSWORD, BCrypt.gensalt(15)));
   }
 
 }
