@@ -3,6 +3,7 @@ package library.domain.rental;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +51,8 @@ class BorrowTest {
     @Test
     void singleBorrow() {
       // given
-      Customer customer = customerRepo.save(new Customer("Test", "Test", "test@email.com", "pass"));
+      Customer customer =
+          customerRepo.save(new Customer("Test", "Test", "test@email.com", "pass", Set.of()));
       CreateBookForm bookForm = new CreateBookForm();
       bookForm.title = "Test title";
       Book book = bookRepo.save(new Book(bookForm));
