@@ -74,7 +74,7 @@ public class Customer {
     return new CustomerDto(this.getName(), rolesNames);
   }
 
-  private String getName() {
+  public String getName() {
     return this.firstName + " " + this.lastName;
   }
 
