@@ -1,9 +1,11 @@
 package library.domain.customer;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import library.api.dto.CustomerDto;
 import library.domain.customer.role.Role;
@@ -40,6 +44,12 @@ public class Customer {
   @NotBlank
   private String password;
 
+  @NotNull
+  @Past
+  private LocalDateTime lastPasswordUpdate = LocalDateTime.now();
+
+  private String resetPasswordHash;
+
   @OneToMany(mappedBy = "customer")
   private List<Rental> rentals;
 
@@ -62,7 +72,7 @@ public class Customer {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.password = BCrypt.hashpw(password, BCrypt.gensalt(15));
+    this.password = this.hashPassword(password);
     this.roles = roles;
   }
 
@@ -92,6 +102,23 @@ public class Customer {
 
   public Set<Role> getRoles() {
     return Collections.unmodifiableSet(this.roles);
+  }
+
+  public void generateResetPasswordHash() {
+    this.resetPasswordHash = UUID.randomUUID().toString();
+  }
+
+  public void changePassword(String password) {
+    this.password = this.hashPassword(password);
+    this.lastPasswordUpdate = LocalDateTime.now();
+  }
+
+  public String getResetPasswordHash() {
+    return resetPasswordHash;
+  }
+
+  private String hashPassword(String password) {
+    return BCrypt.hashpw(password, BCrypt.gensalt(15));
   }
 
 }

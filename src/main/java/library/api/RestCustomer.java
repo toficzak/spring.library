@@ -1,18 +1,15 @@
 package library.api;
 
-import java.util.List;
 import javax.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import library.api.dto.CustomerDto;
 import library.api.form.RegistrationForm;
-import library.auth.IAuthenticationFacade;
-import library.domain.customer.ListerCustomer;
+import library.api.form.ResetPasswordForm;
+import library.api.form.SetupResetPasswordForm;
+import library.domain.customer.FacadeCustomer;
 import library.domain.customer.Registrator;
 
 @RestController
@@ -20,26 +17,12 @@ import library.domain.customer.Registrator;
 public class RestCustomer {
 
   private Registrator registrator;
-  private ListerCustomer customerLister;
-  private IAuthenticationFacade authenticationFacade;
+  private FacadeCustomer customerFacade;
 
-  public RestCustomer(Registrator registrator, ListerCustomer customerLister,
-      IAuthenticationFacade authenticationFacade) {
+  public RestCustomer(Registrator registrator, FacadeCustomer customerFacade) {
     super();
     this.registrator = registrator;
-    this.customerLister = customerLister;
-    this.authenticationFacade = authenticationFacade;
-  }
-
-  @GetMapping
-  public List<CustomerDto> listing() {
-    return customerLister.getAll();
-  }
-
-  @GetMapping("me")
-  public CustomerDto me() {
-    Authentication auth = authenticationFacade.getAuthentication();
-    return customerLister.get(((User) auth.getPrincipal()).getUsername());
+    this.customerFacade = customerFacade;
   }
 
   @PostMapping("register")
@@ -47,4 +30,13 @@ public class RestCustomer {
     return registrator.register(form);
   }
 
+  @PostMapping("/setupResetPassword")
+  public void setupResetPassword(@Valid @RequestBody SetupResetPasswordForm form) {
+    customerFacade.setupResetPassword(form);
+  }
+
+  @PostMapping("/resetPassword")
+  public void resetPassword(@Valid @RequestBody ResetPasswordForm form) {
+    customerFacade.resetPassword(form);
+  }
 }
