@@ -1,6 +1,5 @@
 package library.api;
 
-import java.util.List;
 import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -29,11 +28,6 @@ public class RestCustomerMe {
     this.customerLister = customerLister;
     this.authenticationFacade = authenticationFacade;
     this.customerFacade = customerFacade;
-  }
-
-  @GetMapping
-  public List<CustomerDto> listing() {
-    return customerLister.getAll();
   }
 
   @GetMapping

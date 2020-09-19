@@ -21,6 +21,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenProvider implements Serializable {
 
+  private static final long serialVersionUID = 7690340503342916008L;
+
   public String getUsernameFromToken(String token) {
     return getClaimFromToken(token, Claims::getSubject);
   }
@@ -60,14 +62,14 @@ public class TokenProvider implements Serializable {
         .compact();
   }
 
-  public Boolean validateToken(String token, UserDetails userDetails) {
+  public boolean validateToken(String token, UserDetails userDetails) {
     final String username = getUsernameFromToken(token);
     return (username.equals(userDetails.getUsername())
         && !isTokenExpired(token));
   }
 
   UsernamePasswordAuthenticationToken getAuthentication(final String token,
-      final Authentication existingAuth, final UserDetails userDetails) {
+      final UserDetails userDetails) {
 
     final JwtParser jwtParser = Jwts.parser().setSigningKey(Constants.SIGNING_KEY);
 

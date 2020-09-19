@@ -1,11 +1,16 @@
 package library.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import library.api.form.CreateBookForm;
+import library.domain.book.Book;
+import library.domain.book.RepositoryBook;
 import library.domain.customer.Customer;
 import library.domain.customer.RepositoryCustomer;
 import library.domain.customer.role.RepositoryRole;
@@ -19,11 +24,14 @@ public class DbFiller implements ApplicationRunner {
 
   private RepositoryRole roleRepo;
   private RepositoryCustomer customerRepo;
+  private RepositoryBook bookRepo;
 
-  public DbFiller(RepositoryRole roleRepo, RepositoryCustomer customerRepo) {
+  public DbFiller(RepositoryRole roleRepo, RepositoryCustomer customerRepo,
+      RepositoryBook bookRepo) {
     super();
     this.roleRepo = roleRepo;
     this.customerRepo = customerRepo;
+    this.bookRepo = bookRepo;
   }
 
   @Override
@@ -31,8 +39,8 @@ public class DbFiller implements ApplicationRunner {
 
     this.initRoles();
     this.initCustomers();
+    this.initBooks();
   }
-
 
   @Transactional
   private void initRoles() {
@@ -55,6 +63,19 @@ public class DbFiller implements ApplicationRunner {
 
     Set<Customer> customers = Set.of(admin, customer);
     customerRepo.saveAll(customers);
+  }
+
+  @Transactional
+  private void initBooks() {
+    List<Book> books = new ArrayList<>();
+
+    CreateBookForm form = new CreateBookForm();
+    form.title = "Pan Tadeusz";
+    books.add(new Book(form));
+
+    form.title = "Quo Vadis";
+    books.add(new Book(form));
+    bookRepo.saveAll(books);
   }
 
   public static void main(String... strings) {
