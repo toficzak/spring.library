@@ -30,5 +30,4 @@ public class PasswordReseter {
     return new SendEmailEvent(this, customer.getEmail(), message, body);
   }
 
-
 }

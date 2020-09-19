@@ -33,7 +33,8 @@ public class Registrator {
   }
 
   private SendEmailEvent prepareRegistrationEmail(Customer customer) {
-    String message = "Registration of " + customer.getName() + ".";
+    String message = "Registration of " + customer.getName() + ". Activation link: "
+        + customer.getActivationHash() + ".";
     return new SendEmailEvent(this, customer.getEmail(), message, message);
   }
 }

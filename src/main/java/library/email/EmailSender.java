@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSender {
 
-  private JavaMailSender emailSender;
+  private JavaMailSender sender;
   private String from;
 
   public EmailSender(
       JavaMailSender emailSender,
       @Value("${spring.mail.username}") String from) {
     super();
-    this.emailSender = emailSender;
+    this.sender = emailSender;
     this.from = from;
   }
 
@@ -29,6 +29,6 @@ public class EmailSender {
     message.setTo(event.email);
     message.setSubject(event.subject);
     message.setText(event.body);
-    emailSender.send(message);
+    sender.send(message);
   }
 }

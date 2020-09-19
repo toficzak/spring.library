@@ -1,6 +1,9 @@
 package library.domain.customer;
 
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 import library.api.dto.CustomerDto;
 import library.api.form.ChangePasswordForm;
 import library.api.form.ResetPasswordForm;
@@ -40,5 +43,16 @@ public class FacadeCustomer {
     Customer customer = auth.getCurrentUser();
     passwordChanger.changePassword(customer, form.password);
     return customer.viewModel();
+  }
+
+  public void activate(String activationHash) {
+    Optional<Customer> optCustomer = customerRepo.findByActivationHash(activationHash);
+    if (optCustomer.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    } else {
+      Customer customer = optCustomer.get();
+      customer.activate();
+      customerRepo.save(customer);
+    }
   }
 }

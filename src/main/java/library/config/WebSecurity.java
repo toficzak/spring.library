@@ -50,7 +50,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             "/token/generate-token",
             "/customers/register",
             "/customers/setupResetPassword",
-            "/customers/resetPassword")
+            "/customers/resetPassword",
+            "/customers/activate/*")
         .permitAll()
         .anyRequest().authenticated()
         .and()

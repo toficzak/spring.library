@@ -50,6 +50,10 @@ public class Customer {
 
   private String resetPasswordHash;
 
+  private String activationHash;
+  private boolean active;
+  private LocalDateTime activation;
+
   @OneToMany(mappedBy = "customer")
   private List<Rental> rentals;
 
@@ -74,6 +78,7 @@ public class Customer {
     this.email = email;
     this.password = this.hashPassword(password);
     this.roles = roles;
+    this.activationHash = UUID.randomUUID().toString();
   }
 
   public CustomerDto viewModel() {
@@ -81,7 +86,7 @@ public class Customer {
     this.roles.stream()
         .map(Role::getName)
         .forEach(rolesNames::add);
-    return new CustomerDto(this.getName(), rolesNames);
+    return new CustomerDto(this.getName(), rolesNames, this.active);
   }
 
   public String getName() {
@@ -110,6 +115,7 @@ public class Customer {
 
   public void changePassword(String password) {
     this.password = this.hashPassword(password);
+    this.resetPasswordHash = null;
     this.lastPasswordUpdate = LocalDateTime.now();
   }
 
@@ -117,8 +123,18 @@ public class Customer {
     return resetPasswordHash;
   }
 
+  public void activate() {
+    this.active = true;
+    this.activationHash = null;
+    this.activation = LocalDateTime.now();
+  }
+
   private String hashPassword(String password) {
     return BCrypt.hashpw(password, BCrypt.gensalt(15));
+  }
+
+  public String getActivationHash() {
+    return this.activationHash;
   }
 
 }

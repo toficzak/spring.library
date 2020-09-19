@@ -1,6 +1,7 @@
 package library.api;
 
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +39,10 @@ public class RestCustomer {
   @PostMapping("/resetPassword")
   public void resetPassword(@Valid @RequestBody ResetPasswordForm form) {
     customerFacade.resetPassword(form);
+  }
+
+  @PostMapping("/activate/{activationHash:[a-zA-Z0-9-]+}")
+  public void activate(@PathVariable("activationHash") String activationHash) {
+    customerFacade.activate(activationHash);
   }
 }

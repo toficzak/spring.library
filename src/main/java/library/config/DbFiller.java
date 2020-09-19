@@ -56,10 +56,12 @@ public class DbFiller implements ApplicationRunner {
     Set<Role> adminRoles = roleRepo.findAllByNameIn(Role.ADMIN_ROLES);
     Customer admin = new Customer("Krzysio", "K", "admin@library.pl",
         PASSWORD, adminRoles);
+    admin.activate();
 
     Set<Role> customerRoles = roleRepo.findAllByNameIn(Role.CUSTOMER_ROLES);
     Customer customer = new Customer("Rudy", "K", "customer@library.pl",
         PASSWORD, customerRoles);
+    customer.activate();
 
     Set<Customer> customers = Set.of(admin, customer);
     customerRepo.saveAll(customers);

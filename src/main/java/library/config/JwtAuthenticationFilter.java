@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import library.domain.customer.ListerCustomer;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -22,6 +23,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Autowired
   private TokenProvider jwtTokenUtil;
+
+  @Autowired
+  private ListerCustomer customerLister;
 
   @Override
   protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
@@ -44,6 +48,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+      if (!customerLister.get(username).active) {
+        throw new SecurityException("Account not active.");
+      }
 
       if (jwtTokenUtil.validateToken(authToken, userDetails)) {
         UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(
