@@ -10,35 +10,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import library.api.dto.BookDto;
 import library.api.form.CreateBookForm;
-import library.domain.book.CreatorBook;
-import library.domain.book.ListerBook;
+import library.domain.book.FacadeBook;
 
 @RestController
 @RequestMapping("/books")
 public class RestBook {
 
-  private CreatorBook bookCreator;
-  private ListerBook bookLister;
+  private FacadeBook bookFacade;
 
-  public RestBook(CreatorBook bookCreator, ListerBook bookLister) {
+  public RestBook(FacadeBook bookFacade) {
     super();
-    this.bookCreator = bookCreator;
-    this.bookLister = bookLister;
+    this.bookFacade = bookFacade;
   }
 
   @GetMapping("{id}")
   public BookDto get(@PathVariable("id") Long id) {
-    return bookLister.get(id);
+    return bookFacade.get(id);
   }
 
   @GetMapping
   public List<BookDto> list() {
-    return bookLister.list();
+    return bookFacade.list();
   }
 
   @PostMapping
   public BookDto create(@Valid @RequestBody CreateBookForm form) {
-    return bookCreator.create(form);
+    return bookFacade.create(form);
   }
 
 }

@@ -3,6 +3,7 @@ package library.domain.book;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import library.api.dto.BookDto;
 import library.api.form.CreateBookForm;
@@ -14,6 +15,9 @@ public class Book {
   private Long id;
   @NotNull
   private String title;
+
+  @ManyToOne
+  private Author author;
 
   public Book() {}
 
@@ -28,4 +32,6 @@ public class Book {
   public Long getId() {
     return this.id;
   }
+
+
 }
