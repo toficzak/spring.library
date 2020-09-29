@@ -23,9 +23,7 @@ public class Author {
   @OneToMany
   private List<Book> books = new ArrayList<>();
 
-  public Author(Long id, String firstName, String lastName) {
-    super();
-    this.id = id;
+  public Author(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
